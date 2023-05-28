@@ -39,12 +39,21 @@ namespace OrderService.Repositories{
         private async Task AddDishToOrderAsync(Order order, DishAddingDto dishAddingDto){
             Dish dish = await _dishRepository.GetDishByIdAsync(dishAddingDto.DishId);
 
+            if(dish.Quantity == 0){
+                throw new ArgumentException($"Dish with id {dish.Id} is out of stock");
+            }
+
             var orderDish = new OrderDish{
                 OrderId = order.Id,
                 DishId = dish.Id,
                 Quantity = dishAddingDto.Quantity,
                 CurrentPrice = dish.Price
             };
+
+            dish.Quantity -= dishAddingDto.Quantity;
+
+            await _dishRepository.UpdateDishAsync(dish);
+
             await _dbContext.OrderDishes.AddAsync(orderDish);
             await _dbContext.SaveChangesAsync();
         }
