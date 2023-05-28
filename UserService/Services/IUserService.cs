@@ -2,6 +2,9 @@ using UserService.Models;
 
 namespace UserService.Services
 {
+    /// <summary>
+    /// Interface for managing users.
+    /// </summary>
     public interface IUserRepo{
         /// <summary>
         /// Get a user by their id
