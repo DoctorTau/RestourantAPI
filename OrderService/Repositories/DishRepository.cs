@@ -1,19 +1,30 @@
+using Microsoft.EntityFrameworkCore;
 using OrderService.Database;
 using OrderService.Models;
 
 namespace OrderService.Repositories{
     public class DishRepository : IDishRepository
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _dbContext;
         public DishRepository(AppDbContext context)
         {
-            _context = context;
+            _dbContext = context;
+        }
+
+        public async Task<IEnumerable<Dish>> GetAllDishesAsync()
+        {
+            return await _dbContext.Dishes.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Dish>> GetAllPossibleDishesAsync(){
+            var allDishes = await GetAllDishesAsync();
+            return allDishes.Where(d => d.Quantity > 0); 
         }
 
         public async Task<Dish> CreateDishAsync(DishCreatingDto dish)
         {
             // Check if the dish already exists.
-            var existingDish = _context.Dishes.FirstOrDefault(d => d.Name == dish.Name);
+            var existingDish = _dbContext.Dishes.FirstOrDefault(d => d.Name == dish.Name);
             if (existingDish == null || existingDish.Name == dish.Name)
             {
                 throw new ArgumentException($"Dish with name {dish.Name} already exists.");
@@ -29,8 +40,8 @@ namespace OrderService.Repositories{
             };
 
             // Add the dish to the database.
-            await _context.Dishes.AddAsync(newDish);
-            await _context.SaveChangesAsync();
+            await _dbContext.Dishes.AddAsync(newDish);
+            await _dbContext.SaveChangesAsync();
 
             return newDish;
         }
@@ -38,14 +49,14 @@ namespace OrderService.Repositories{
         public async Task<Dish> DeleteDishAsync(int id)
         {
             var dish = await GetDishByIdAsync(id);
-            _context.Dishes.Remove(dish);
-            await _context.SaveChangesAsync();
+            _dbContext.Dishes.Remove(dish);
+            await _dbContext.SaveChangesAsync();
             return dish;
         }
 
         public async Task<Dish> GetDishByIdAsync(int id)
         {
-            var dish = await _context.Dishes.FindAsync(id)
+            var dish = await _dbContext.Dishes.FindAsync(id)
                 ?? throw new ArgumentException("Dish with this id does not exist");
             return dish;
         }
@@ -57,8 +68,8 @@ namespace OrderService.Repositories{
             existingDish.Description = dish.Description;
             existingDish.Price = dish.Price;
             existingDish.Quantity = dish.Quantity;
-            _context.Dishes.Update(existingDish);
-            await _context.SaveChangesAsync();
+            _dbContext.Dishes.Update(existingDish);
+            await _dbContext.SaveChangesAsync();
             return existingDish;
         }
     }

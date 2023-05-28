@@ -7,6 +7,18 @@ namespace OrderService.Repositories
     /// </summary>
     public interface IDishRepository{
         /// <summary>
+        /// Gets all dishes.
+        /// </summary>
+        /// <returns>A collection of all dishes.</returns>
+        Task<IEnumerable<Dish>> GetAllDishesAsync();
+
+        /// <summary>
+        /// Gets all possible dishes.
+        /// </summary>
+        /// <returns>A collection of all possible dishes.</returns>
+        Task<IEnumerable<Dish>> GetAllPossibleDishesAsync();
+
+        /// <summary>
         /// Creates a new dish.
         /// </summary>
         /// <param name="dish">The dish to create.</param>
