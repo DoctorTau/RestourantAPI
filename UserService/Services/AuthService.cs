@@ -11,9 +11,22 @@ namespace UserService.Services{
             _context = context;
         }
 
-        public Task<User> LoginAsync(string email, string password)
+        public async Task<User> LoginAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            // Find the user with the given email
+            var user = await _context.Users.FindAsync(email);
+            if (user == null)
+            {
+                throw new ArgumentException("User with this email does not exist");
+            }
+
+            // Check if the password is correct
+            if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            {
+                throw new ArgumentException("Password is incorrect");
+            }
+
+            return user;
         }
 
         public async Task<User> RegisterAsync(UserRegistrationDto user)
