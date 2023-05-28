@@ -4,3 +4,6 @@
 # Dotnet files
 UserService/bin/
 UserService/obj/
+
+OrderService/bin/
+OrderService/obj/
