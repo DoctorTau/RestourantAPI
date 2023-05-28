@@ -26,6 +26,13 @@ namespace UserService.Services
         /// <param name="id"> Id of user to delete.</param>
         /// <returns> Deleted user.</returns>
         Task<User> DeleteUserAsync(int id);
+
+        /// <summary>
+        /// Create a manager user
+        /// </summary>
+        /// <param name="userCreatingDto"> UserRegistrationDto object containing information about the user to create.</param>
+        /// <returns> Created manager user.</returns>
+        Task<User> CreateManagerAsync(UserRegistrationDto userCreatingDto);
     }
 }
 

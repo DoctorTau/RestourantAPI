@@ -38,6 +38,16 @@ namespace UserService.Controllers{
             }
         }
 
+        [HttpPost("register/manager"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RegisterManagerAsync(UserRegistrationDto userRegistrationDto){
+            try{
+            var user = await _userService.CreateManagerAsync(userRegistrationDto);
+            return Ok(user);
+            } catch (ArgumentException e){
+                return BadRequest(e.Message);
+            }
+        }
+
         /// <summary>
         /// Logs in a user
         /// </summary>
