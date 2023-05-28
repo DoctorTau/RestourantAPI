@@ -1,0 +1,6 @@
+# vscode files 
+.vscode/
+
+# Dotnet files
+UserService/bin/
+UserService/obj/
