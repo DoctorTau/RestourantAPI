@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OrderService.Models;
 
 namespace OrderService.Database{
     public class AppDbContext : DbContext{
@@ -11,6 +12,10 @@ namespace OrderService.Database{
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
         }
+
+        public required DbSet<Order> Orders { get; set; }
+        public required DbSet<Dish> Dishes { get; set; }
+        public required DbSet<OrderDish> OrderDishes { get; set; }
 
    }
 }
