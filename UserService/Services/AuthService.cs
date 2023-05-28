@@ -16,7 +16,7 @@ namespace UserService.Services{
         public async Task<Session> LoginAsync(string email, string password)
         {
             // Find the user with the given email
-            var user = await _context.Users.FindAsync(email);
+            User? user = _context.Users.First(u => u.Email == email);
             if (user == null)
             {
                 throw new ArgumentException("User with this email does not exist");
@@ -34,7 +34,7 @@ namespace UserService.Services{
         public async Task<User> RegisterAsync(UserRegistrationDto user)
         {
             // Check if user with this username or email already exists
-            var existingUser = await _context.Users.FindAsync(user.Email, user.Name);
+            User? existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email || u.Name == user.Name);
             if (existingUser != null)
             {
                 throw new ArgumentException("User with this email or username already exists");

@@ -20,7 +20,7 @@ namespace UserService.Services{
             {
                 UserId = user.Id,
                 SessionToken = jwt,
-                ExpiresAt = DateTime.Now.AddDays(7)
+                ExpiresAt = DateTime.Now.AddDays(7).ToUniversalTime()
             }; 
 
             await _dbContext.Sessions.AddAsync(session);
