@@ -26,6 +26,8 @@ namespace OrderService.Repositories{
                 await AddDishToOrderAsync(order, dishAddingDto);
             }
 
+            StartOrderProcess(order);
+
             return order;
         }
 
@@ -34,6 +36,20 @@ namespace OrderService.Repositories{
             var order = await _dbContext.Orders.FindAsync(id)
                 ?? throw new ArgumentException("Order with this id does not exist");
             return order;
+        }
+
+        public async Task<Order> UpdateOrderAsync(Order order)
+        {
+            Order existingOrder = await GetOrderByIdAsync(order.Id);
+
+            existingOrder.SpecialRequest = order.SpecialRequest;
+            existingOrder.Status = order.Status;
+
+            // Update the order in the database
+            _dbContext.Update(existingOrder);
+            await _dbContext.SaveChangesAsync();
+
+            return existingOrder;
         }
 
         private async Task AddDishToOrderAsync(Order order, DishAddingDto dishAddingDto){
@@ -56,6 +72,27 @@ namespace OrderService.Repositories{
 
             await _dbContext.OrderDishes.AddAsync(orderDish);
             await _dbContext.SaveChangesAsync();
+        }
+
+        private void StartOrderProcess(Order order){
+            // Start a new thread to process the order.
+            // This process should wait for random time between 5 and 15 seconds.
+            // After that, it should update the order status to "Processing".
+            // After that, process should wait for random time between 5 and 15 seconds.
+            // After that, it should update the order status to "Done".
+            Thread thread = new(async () => {
+                Random random = new();
+                int randomTime = random.Next(5, 15);
+                Thread.Sleep(randomTime * 1000);
+                order.Status = OrderStatus.Processing;
+                await UpdateOrderAsync(order);
+                randomTime = random.Next(5, 15);
+                Thread.Sleep(randomTime * 1000);
+                order.Status = OrderStatus.Done;
+                await UpdateOrderAsync(order);
+            });
+
+            thread.Start();
         }
     }
 }
