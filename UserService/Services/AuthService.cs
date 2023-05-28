@@ -5,13 +5,15 @@ namespace UserService.Services{
     public class AuthService : IAuthService
     {
         private readonly AppDbContext _context;
+        private readonly ISessionService _sessionService;
 
-        public AuthService(AppDbContext context)
+        public AuthService(AppDbContext context, ISessionService sessionService)
         {
             _context = context;
+            _sessionService = sessionService;
         }
 
-        public async Task<User> LoginAsync(string email, string password)
+        public async Task<Session> LoginAsync(string email, string password)
         {
             // Find the user with the given email
             var user = await _context.Users.FindAsync(email);
@@ -26,7 +28,7 @@ namespace UserService.Services{
                 throw new ArgumentException("Password is incorrect");
             }
 
-            return user;
+            return await _sessionService.CreateSession(user);
         }
 
         public async Task<User> RegisterAsync(UserRegistrationDto user)
