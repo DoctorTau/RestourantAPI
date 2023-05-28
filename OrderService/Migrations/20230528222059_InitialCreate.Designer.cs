@@ -12,7 +12,7 @@ using OrderService.Database;
 namespace OrderService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230528212107_InitialCreate")]
+    [Migration("20230528222059_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -89,8 +89,8 @@ namespace OrderService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CurrentPrice")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("CurrentPrice")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("DishId")
                         .HasColumnType("integer");

@@ -16,7 +16,7 @@ namespace UserService.Services{
             // Create a jwt
             string jwt = _jwtCreator.CreateToken(user);
 
-            Session session = new Session
+            Session session = new()
             {
                 UserId = user.Id,
                 SessionToken = jwt,

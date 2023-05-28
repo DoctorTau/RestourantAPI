@@ -16,11 +16,8 @@ namespace UserService.Services{
         public async Task<Session> LoginAsync(string email, string password)
         {
             // Find the user with the given email
-            User? user = _context.Users.First(u => u.Email == email);
-            if (user == null)
-            {
-                throw new ArgumentException("User with this email does not exist");
-            }
+            User? user = _context.Users.First(u => u.Email == email)
+                         ?? throw new ArgumentException("User with this email does not exist");
 
             // Check if the password is correct
             if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))

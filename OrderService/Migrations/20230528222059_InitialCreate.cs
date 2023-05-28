@@ -37,7 +37,7 @@ namespace OrderService.Migrations
                     OrderId = table.Column<int>(type: "integer", nullable: false),
                     DishId = table.Column<int>(type: "integer", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
-                    CurrentPrice = table.Column<int>(type: "integer", nullable: false)
+                    CurrentPrice = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {

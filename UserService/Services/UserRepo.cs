@@ -12,11 +12,7 @@ namespace UserService.Services{
 
         public async Task<User> DeleteUserAsync(int id)
         {
-            User? user = await _dbContext.Users.FindAsync(id);
-            if(user == null){
-                throw new ArgumentException("User with this id does not exist");
-            }
-
+            User user = await GetUserByIdAsync(id);
             _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();
 
@@ -25,19 +21,14 @@ namespace UserService.Services{
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            User? user = await _dbContext.Users.FindAsync(id);
-            if(user == null){
-                throw new ArgumentException("User with this id does not exist");
-            }
+            User? user = await _dbContext.Users.FindAsync(id)
+                         ?? throw new ArgumentException("User with this id does not exist");
             return user;
         }
 
         public async Task<User> UpdateUserAsync(User user)
         {
-            User? existingUser = await _dbContext.Users.FindAsync(user.Id);
-            if(existingUser == null){
-                throw new ArgumentException("User with this id does not exist");
-            }
+            User existingUser = await GetUserByIdAsync(user.Id);
 
             existingUser.Name = user.Name;
             existingUser.Email = user.Email;

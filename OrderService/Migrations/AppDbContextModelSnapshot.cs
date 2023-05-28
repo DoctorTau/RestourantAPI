@@ -86,8 +86,8 @@ namespace OrderService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CurrentPrice")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("CurrentPrice")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("DishId")
                         .HasColumnType("integer");

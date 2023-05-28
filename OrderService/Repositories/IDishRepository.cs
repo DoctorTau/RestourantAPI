@@ -18,7 +18,7 @@ namespace OrderService.Repositories
         /// </summary>
         /// <param name="id">The ID of the dish to get.</param>
         /// <returns>The dish with the specified ID.</returns>
-        Dish GetDishById(int id);
+        Task<Dish> GetDishByIdAsync(int id);
         
         /// <summary>
         /// Updates an existing dish.

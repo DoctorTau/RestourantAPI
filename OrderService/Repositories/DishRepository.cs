@@ -4,7 +4,7 @@ using OrderService.Models;
 namespace OrderService.Repositories{
     public class DishRepository : IDishRepository
     {
-        AppDbContext _context;
+        private readonly AppDbContext _context;
         public DishRepository(AppDbContext context)
         {
             _context = context;
@@ -37,26 +37,22 @@ namespace OrderService.Repositories{
 
         public async Task<Dish> DeleteDishAsync(int id)
         {
-            var dish = GetDishById(id);
+            var dish = await GetDishByIdAsync(id);
             _context.Dishes.Remove(dish);
             await _context.SaveChangesAsync();
             return dish;
         }
 
-        public Dish GetDishById(int id)
+        public async Task<Dish> GetDishByIdAsync(int id)
         {
-            var dish = _context.Dishes.FirstOrDefault(d => d.Id == id);
-            if (dish == null)
-            {
-                throw new ArgumentException($"Dish with ID {id} does not exist.");
-            }
-
+            var dish = await _context.Dishes.FindAsync(id)
+                ?? throw new ArgumentException("Dish with this id does not exist");
             return dish;
         }
 
         public async Task<Dish> UpdateDishAsync(Dish dish)
         {
-            Dish existingDish = GetDishById(dish.Id);
+            Dish existingDish = await GetDishByIdAsync(dish.Id);
             existingDish.Name = dish.Name;
             existingDish.Description = dish.Description;
             existingDish.Price = dish.Price;
