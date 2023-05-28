@@ -25,7 +25,7 @@ namespace OrderService.Repositories{
         {
             // Check if the dish already exists.
             var existingDish = _dbContext.Dishes.FirstOrDefault(d => d.Name == dish.Name);
-            if (existingDish == null || existingDish.Name == dish.Name)
+            if (existingDish != null)
             {
                 throw new ArgumentException($"Dish with name {dish.Name} already exists.");
             }

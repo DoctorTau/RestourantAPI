@@ -1,8 +1,15 @@
 using Microsoft.IdentityModel.Tokens;
+using OrderService.Database;
+using OrderService.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add db context to the container.
+builder.Services.AddDbContext<AppDbContext>();
+
 // Add services to the container.
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IDishRepository, DishRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
