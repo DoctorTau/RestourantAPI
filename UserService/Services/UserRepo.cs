@@ -44,6 +44,7 @@ namespace UserService.Services{
             existingUser.PasswordHash = user.PasswordHash;
 
             // Update the user in the database
+            _dbContext.Update(existingUser);
             await _dbContext.SaveChangesAsync();
 
             return existingUser;
