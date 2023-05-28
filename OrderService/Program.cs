@@ -1,3 +1,5 @@
+using Microsoft.IdentityModel.Tokens;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -31,8 +33,6 @@ builder.Services.AddAuthentication().AddJwtBearer(
 
     }
 );
-
-
 
 var app = builder.Build();
 
