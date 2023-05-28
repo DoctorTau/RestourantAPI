@@ -16,6 +16,5 @@ namespace OrderService.Database{
         public required DbSet<Order> Orders { get; set; }
         public required DbSet<Dish> Dishes { get; set; }
         public required DbSet<OrderDish> OrderDishes { get; set; }
-
    }
 }
