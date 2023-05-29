@@ -5,6 +5,9 @@ using OrderService.Repositories;
 
 namespace OrderService.Controllers
 {
+    /// <summary>
+    /// Controller for handling orders.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
@@ -16,6 +19,11 @@ namespace OrderService.Controllers
             _orderRepository = orderRepository;
         }
 
+        /// <summary>
+        /// Gets an order by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the order to retrieve.</param>
+        /// <returns>The order with the specified ID.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrderByIdAsync(int id)
         {
@@ -29,6 +37,11 @@ namespace OrderService.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a new order.
+        /// </summary>
+        /// <param name="orderCreatingDto">The data for the new order.</param>
+        /// <returns>The newly created order.</returns>
         [HttpPost, Authorize]
         public async Task<ActionResult<Order>> CreateOrderAsync(OrderCreatingDto orderCreatingDto)
         {
