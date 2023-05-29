@@ -66,7 +66,7 @@ namespace OrderService.Repositories
         {
             Dish dish = await _dishRepository.GetDishByIdAsync(dishAddingDto.DishId);
 
-            if (dish.Quantity == 0)
+            if (dish.Quantity < dishAddingDto.Quantity)
             {
                 throw new ArgumentException($"Dish with id {dish.Id} is out of stock");
             }
